@@ -26,20 +26,19 @@ from .serializers import (
     CustomUserEditSerializer,
     ReviewSerializer,
     CommentSerializer,
-    TitleGETSerializer
+    TitleGETSerializer,
 )
 from .permissions import (
     IsAdmin,
     IsAdminOrReadOnly,
     AuthorAdminModeratorOrReadOnly,
-    AuthorAdminModeratorOrReadOnly
 )
 from reviews.models import (
     Categories,
     Genres,
     Title,
     CustomUser,
-    Review
+    Review,
 )
 from .filters import TitlesFilter
 
