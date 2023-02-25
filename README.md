@@ -47,7 +47,74 @@
 
 ## Установка
 
-Клонировать репозиторий и перейти в него в командной строке:
+1. Клонировать репозиторий и перейти в него в командной строке:
+```
+git clone git@github.com:Hello09Andrey/infra_sp2.git
+cd infra_sp2
+```
+2. Перейдите в директорию infra и создайте файл .env c содержимым:
+```
+cd infra
+touch .env
+nano .env
+```
+```
+DB_ENGINE=django.db.backends.postgresql #указываем что работаем с postgresql
+DB_NAME=postgres #указываем имя базы данных
+POSTGRES_USER=set_your_username #логин для подключения к БД
+POSTGRES_PASSWORD=set_your_pwd #пароль для подключения к БД
+DB_HOST=db #название контейнера
+DB_PORT=5432 #порт для подключения к БД
+```
+3. Запустите docker-compose.
 
-> git@github.com:Hello09Andrey/infra_sp2.git
+```
+docker-compose up -d
+```
 
+4. Проверьте, что контейнеры запустились:
+
+```
+docker container ls
+```
+
+5. Выполните миграции:
+
+```
+docker-compose exec web python manage.py migrate
+```
+
+6. Создайте суперпользователя:
+
+```
+docker-compose exec web python manage.py createsuperuser
+```
+
+7. Подгрузите статику:
+
+```
+docker-compose exec web python manage.py collectstatic --no-input
+```
+
+8. Заполните базу данными:
+   - Скопируйте тестовую базу в контейнер:
+    ```
+    docker cp fixtures.json <id>:app/
+    ```
+и загрузите её:
+```
+docker-compose exec web python manage.py loaddata fixtures.json
+```
+9. Для того чтобы сохранить свою базу в fixtures:
+```
+docker-compose exec web python manage.py dumpdata > fixtures.json
+```
+
+10. Остановить работу контейнеров можно командой:
+```
+docker-compose down
+```
+Документация после запуска доступна по адресу localhost/redoc.
+
+### Автор:
+Белоусов Андрей
